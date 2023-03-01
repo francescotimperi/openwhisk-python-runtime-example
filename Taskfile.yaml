@@ -17,10 +17,10 @@
 #
 version: '3'
 
-#vars:
+vars:
   NUV_MF_PYTHON_TAG: 
     sh: git describe --tags --abbrev=0 2>/dev/null || git rev-parse --short HEAD
-  NUV_MF_PYTHON_IMAGE: ghcr.io/francescotimperi/action-python-v3.10
+  NUV_MF_PYTHON_IMAGE: ghcr.io/francescotimperi/action-baupanlabs-python-v3.10
     
 tasks:
   

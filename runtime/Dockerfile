@@ -48,11 +48,11 @@ COPY requirements.txt requirements.txt
 RUN pip3 install --upgrade pip six wheel &&\
     pip3 install --no-cache-dir -r requirements.txt
 
-# Install all the common modules used by metaflow
-RUN pip install requests -qqq\
-    pip install awscli boto3\
-    pip install azure-identity azure-storage-blob simple-azure-blob-downloader -qqq\
-    pip install scikit-learn sagemaker
+RUN apt-get install gcc -y
+RUN apt-get install g++ -y
+
+# Install all the common modules used by baupanlabs
+RUN pip3 install duckdb==0.6.0
 
 RUN mkdir -p /action
 WORKDIR /
