@@ -1,0 +1,40 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  action:compile:
+    cmds:
+      - rm app.zip
+      - rm app_input.zip
+      - zip -j -r app_input.zip app && cat app_input.zip | docker run -i --platform linux/amd64 openwhisk/action-python-v3.10:nightly -compile main > app.zip
+
+  action:compress:
+    cmds:
+      - rm app.zip
+      - zip -j -r app.zip app    
+
+  action:deploy:
+    cmds:
+      - nuv package update baupanlabs -p S3_USER DASDASDSAD -p S3_ACCESS adasgdasfgdashfdas
+      - nuv action update baupanlabs/test bck/ow_app.py --docker ghcr.io/francescotimperi/action-baupanlabs-python-v3.10:9f5cd59
+
+  action:deploy-compressed:
+    cmds:
+      - task: action:compress
+      - task: action:deploy
+      - nuv action update baupanlabs/app app.zip --kind python:3
+
+  action:deploy-compiled:
+    cmds:
+      - task: action:compile
+      - task: action:deploy
+      - nuv action update baupanlabs/app app.zip --kind python:3
